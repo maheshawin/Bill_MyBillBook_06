@@ -1,0 +1,9 @@
+
+server:
+  port: 9007
+spring:
+  application:
+    name: BILL-MANAGEMENT
+  config:
+    import: optional:configserver:http://localhost:9296
+
