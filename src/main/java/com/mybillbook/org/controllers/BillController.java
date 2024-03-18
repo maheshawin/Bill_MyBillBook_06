@@ -5,6 +5,7 @@ package com.mybillbook.org.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,12 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mybillbook.org.entities.Bill;
 import com.mybillbook.org.exceptions.BillNotFoundException;
 import com.mybillbook.org.exceptions.PhoneNumberNotFoundException;
+import com.mybillbook.org.exceptions.ProductsNotFoundException;
 import com.mybillbook.org.exceptions.StoreNotFoundException;
 import com.mybillbook.org.services.BillService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 
+@CrossOrigin(origins = {"${app.security.cors.origin}"})
 @RestController
 @RequestMapping("/bills")
 @Slf4j
@@ -29,7 +32,6 @@ public class BillController {
 	
 	@Autowired
 	BillService billService;
-	
 	
 	@PostMapping("/save")
 	public String savebill(@RequestBody Bill bill) {
@@ -44,7 +46,7 @@ public class BillController {
 	}
 	
 	@GetMapping("/{id}")
-	public Bill getBillByBillId(@PathVariable("id") Long billId) throws BillNotFoundException {
+	public Bill getBillByBillId(@PathVariable("id") Long billId) throws BillNotFoundException, ProductsNotFoundException {
 		log.info("inside getBillByBillId " + billId);
 		return billService.getBillByBillId(billId);
 	}
@@ -56,9 +58,10 @@ public class BillController {
 	}
 
 	@GetMapping("/user/{phoneNumber}")
-	public List<Bill> getBillsByPhoneNumber(@PathVariable("phoneNumber") String phoneNumber) throws PhoneNumberNotFoundException {
+	public List<Bill> getBillsByPhoneNumber(@PathVariable("phoneNumber") String phoneNumber) throws PhoneNumberNotFoundException,StoreNotFoundException,ProductsNotFoundException,BillNotFoundException{
 		log.info("inside getBillsByStoreId" + phoneNumber);
 		return billService.getBillsByPhoneNumber(phoneNumber);
 	}
-
+	
+	
 }

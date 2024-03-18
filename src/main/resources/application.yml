@@ -6,4 +6,7 @@ spring:
     name: BILL-MANAGEMENT
   config:
     import: optional:configserver:http://localhost:9296
-
+app:
+  security:
+    cors:
+      origin: http://localhost:4200
